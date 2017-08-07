@@ -1,8 +1,8 @@
 [user]
-    email = nick.simko@hpe.com
+    email = 
     name = Nick Simko
 [gitreview]
-    username = nick.simko@hpe.com
+    username = 
 [push]
     default = simple
 [diff]
