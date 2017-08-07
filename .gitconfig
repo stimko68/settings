@@ -1,0 +1,65 @@
+[user]
+    email = nick.simko@hpe.com
+    name = Nick Simko
+[gitreview]
+    username = nick.simko@hpe.com
+[push]
+    default = simple
+[diff]
+    tool = bc3
+[difftool "bc3"]
+    path = /usr/bin/bcompare
+[merge]
+    tool = bc3
+[mergetool "bc3"]
+    trustExitCode = true
+[alias]
+    cat = show
+    co = checkout -q
+    ff = pull --ff-only
+    logg = log --decorate=full --graph
+    loggs = log --decorate=full --graph --pretty=format:'%h %an <%ae> %cD%n%n%s%n'
+    loggg = log --decorate=full --graph --pretty=fuller
+    lagg = log --all --decorate=full --graph
+    laggg = log --all --decorate=full --graph --pretty=fuller
+    logg1 = log --decorate=full --graph --oneline --abbrev-commit
+    loggb = log --decorate=full --graph --simplify-by-decoration
+    lagg1 = log --all --decorate=full --graph --oneline --abbrev-commit
+    logh = log --all --decorate=full --stat
+    logv = log --all --decorate=full --name-status
+    loggv = log --decorate=full --graph --name-status
+    laggv = log --all --decorate=full --graph --name-status
+    log1 = log --oneline
+    loggl = log --decorate=full --graph --first-parent
+    diffb = diff --ignore-space-change
+    diffw = diff --ignore-all-space
+    qdiff = diff --name-only
+    mergesumm = log --topo-order --reverse --pretty=format:'- %s' HEAD~1..HEAD^2
+    tracking = rev-parse --symbolic-full-name --abbrev-ref '@{u}'
+    head = rev-parse --symbolic-full-name --abbrev-ref HEAD
+    latestbranches = for-each-ref --sort=committerdate refs/heads/
+    latestorigin = for-each-ref --sort=committerdate refs/remotes/origin/
+    clutter = ls-files --others --exclude-standard
+    patches = log --topo-order --no-merges
+    ediff = !eg diff
+    eqdiff = !eg diff --name-only
+    rc = rebase --continue
+    ri = rebase
+    ru = rebase -i @{u}
+    dh = diff HEAD
+    dp = diff HEAD~1 HEAD
+    qdp = diff --name-only HEAD~1 HEAD
+    du = diff @{u}...HEAD
+    dm = diff origin/master...HEAD
+    fo = fetch origin
+    cm = checkout master
+    rv = remote -v
+    ba = branch -a
+    bc = branch -a --contains
+    m = merge --no-ff --log
+    uno = status -uno
+    amend = commit --amend
+[gc]
+    editor = vim
+    reflogExpire = 365 days
+    rh = reset --hard
