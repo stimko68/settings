@@ -1,5 +1,5 @@
 [user]
-    email = 
+    email = nick.simko@ocio.usda.gov
     name = Nick Simko
 [gitreview]
     username = 
@@ -15,7 +15,9 @@
     trustExitCode = true
 [alias]
     cat = show
-    co = checkout -q
+    cm = commit -m
+    cma = commit -a -m
+    co = checkout
     ff = pull --ff-only
     logg = log --decorate=full --graph
     loggs = log --decorate=full --graph --pretty=format:'%h %an <%ae> %cD%n%n%s%n'
@@ -59,7 +61,17 @@
     m = merge --no-ff --log
     uno = status -uno
     amend = commit --amend
+    up = pull --all --prune
 [gc]
     editor = vim
     reflogExpire = 365 days
     rh = reset --hard
+[core]
+    autocrlf = input
+[http]
+	sslVerify = False
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
