@@ -1,16 +1,23 @@
 filetype indent plugin on
 syntax on
 
+if !has("gui_running")
+    set background=dark
+endif
+set autoindent
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 set number
 set relativenumber
-
+set showmatch
 " Set two space tabs for YAML files
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+
+set smarttab
+set tabstop=8
 
 " auto set paste mode
 " https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode

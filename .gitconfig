@@ -1,6 +1,6 @@
 [user]
-    email = nick.simko@ocio.usda.gov
     name = Nick Simko
+    email = nick.simko@datarobot.com
 [gitreview]
     username = 
 [push]
@@ -15,9 +15,21 @@
     trustExitCode = true
 [alias]
     cat = show
-    cm = commit -m
     cma = commit -a -m
     co = checkout
+    cob = checkout -b
+    cm = !git add -A && git commit -m
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    wip = commit -am "WIP"
+    undo = reset HEAD~1 --mixed
+    amend = commit -a --amend
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+    bclean = "!f() { git checkout ${1-master} && git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+    migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-$CURRENT@{u}} && git rebase --onto ${2-master} $CURRENT; }; f"
+
+    # https://coderwall.com/p/euwpig/a-better-git-log
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ff = pull --ff-only
     logg = log --decorate=full --graph
     loggs = log --decorate=full --graph --pretty=format:'%h %an <%ae> %cD%n%n%s%n'
@@ -61,7 +73,25 @@
     m = merge --no-ff --log
     uno = status -uno
     amend = commit --amend
-    up = pull --all --prune
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    
+    # https://hackernoon.com/lesser-known-git-commands-151a1918a60
+    please = push --force-with-lease
+    commend = commit --amend --no-edit
+    st = status -sb -uall
+    grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
+
+    # @jeffesp
+    # bonk = "push head" e.g. push branch with the same name to remote
+    bonk = push --set-upstream origin HEAD
+
+    # @jmbledsoe
+    # trim = delete all branches that are fully merged into their upstream branches
+    # squash = similar to 'git merge --squash', but without committing
+    trim = "!f() { git branch | grep -v '^\\*' | xargs git branch -d; }; f"
+    squash = "!f() { git reset $(git merge-base ${1-master} $(git rev-parse --abbrev-ref HEAD)); }; f"
+
+    branchdate = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(authordate:short)%09%(objectname:short)%09%1B[0;33m%(refname:short)%1B[m%09"
 [gc]
     editor = vim
     reflogExpire = 365 days
