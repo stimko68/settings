@@ -1,5 +1,6 @@
 #!/bin/bash
 # Setup script for fresh OS install
+set -e
 
 if [[ "$EUID" -ne 0 ]]; then
     echo "Script must be run as root!"
@@ -15,7 +16,8 @@ sudo add-apt-repository -y ppa:oranchelo/oranchelo-icon-theme
 
 echo ""
 echo "Installing packages"
-sudo apt install oranchelo-icon-theme vim git
+sudo apt update
+sudo apt install -y oranchelo-icon-theme vim
 
 echo ""
 echo "Set VIM as the default editor"
