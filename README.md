@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.com/simko33f/settings/badges/master/pipeline.svg)](https://gitlab.com/simko33f/settings/-/commits/master)
+
 # NAS Settings
 This repo is a backup of settings files I use for my Linux installs. It also contains a setup script for new Linux installs.
 
