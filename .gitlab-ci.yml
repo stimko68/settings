@@ -3,6 +3,6 @@ stages:
 
 shellcheck:
   stage: test
-  image: koalaman/shellcheck
+  image: koalaman/shellcheck-alpine
   script: 
     - shellcheck bin/*
