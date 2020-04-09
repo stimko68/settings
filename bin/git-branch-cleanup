@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Cleanup local branches that don't exist in the remote
+git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D
+

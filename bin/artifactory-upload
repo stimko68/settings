@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Uploads a given package to Artifactory
+set -e
+
+ART_URL=http://artifactory.int.datarobot.com/artifactory/
+
+function usage() {
+    echo "Usage: artifactory-upload <filename> <repo_path>"
+    echo ""
+    echo "The first argument is the filename to upload, and it can be a relative path."
+    echo "The second argument is the remote path in Artifactory to upload the file to,"
+    echo "not including the filename. The remote path should include the name of the"
+    echo "repository."
+    echo ""
+    echo "This script expects that your Artifactory API key is set to the "
+    echo "ARTIFACTORY_API_KEY environment variable. You cannot upload files without using "
+    echo "your API key. To get or create your API key log into Artifactory, click on your "
+    echo "username, then select Profile. You will be able to generate an API key or see"
+    echo "your existing key there."
+}
+
+if [[ "$1" == "" ]] || [[ "$2" == "" ]]; then
+    usage
+    exit 1
+fi
+
+if [[ "${ARTIFACTORY_API_KEY}" == "" ]]; then
+    echo "ERROR: No Artifactory API key found! Get it from the profile page in the Artifactory UI"
+    echo "and then assign it to the ARTIFACTORY_API_KEY environment variable."
+    exit 1
+fi
+
+FILE=$1
+REPO_PATH=$2/$(basename $FILE)
+
+echo "Uploading ${FILE} to Artifactory remote path ${ART_URL}${REPO_PATH}"
+
+echo "Generating Checksums..."
+if [[ $(uname) == 'Darwin' ]]; then
+    MD5=$(md5 ${FILE} | awk '{print $4}')
+    SHA1=$(shasum ${FILE} | awk '{print $1}')
+    SHA256=$(shasum -a 256 ${FILE} | awk '{print $1}')
+elif [[ $(uname) == 'Linux' ]]; then
+    MD5=$(md5sum ${FILE} | awk '{print $1}')
+    SHA1=$(sha1sum ${FILE} | awk '{print $1}')
+    SHA256=$(sha256sum ${FILE} | awk '{print $1}')
+fi
+
+echo "Uploading file..."
+curl -X PUT -H "X-JFrog-Art-Api:${ARTIFACTORY_API_KEY}" -H "X-Checksum-Md5:${MD5}" -H "X-Checksum-Sha1:${SHA1}" -H "X-Checksum-Sha256:${SHA256}" "${ART_URL}${REPO_PATH}" -T ${FILE}
+

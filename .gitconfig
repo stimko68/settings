@@ -45,6 +45,10 @@
     laggv = log --all --decorate=full --graph --name-status
     log1 = log --oneline
     loggl = log --decorate=full --graph --first-parent
+    lol = log --graph --format='%C(red)%h%C(blue)%d %C(yellow)%ae %C(green)%ar%C(reset) %s'
+    lola = log --graph --format='%C(red)%h%C(blue)%d %C(yellow)%ae %C(green)%ar%C(reset) %s' --all
+    lols = log --graph --format='%C(red)%h%C(blue)%d %C(yellow)%ae %C(green)%ar%C(reset) %s' --stat
+    lolas = log --graph --format='%C(red)%h%C(blue)%d %C(yellow)%ae %C(green)%ar%C(reset) %s' --all --stat
     diffb = diff --ignore-space-change
     diffw = diff --ignore-all-space
     qdiff = diff --name-only

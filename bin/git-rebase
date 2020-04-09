@@ -1,0 +1,17 @@
+#!/bin/bash
+# Rebase the current branch with master
+set -e
+
+CUR_BRANCH=$(git symbolic-ref --short -q HEAD)
+
+echo "Current branch: $CUR_BRANCH"
+
+if [[ "${CUR_BRANCH}" == "master" ]]; then
+    echo "Already on master; cannot rebase"
+    exit 1
+fi
+
+echo "Updating master..."
+git fetch origin master:master
+echo "Rebasing"
+git rebase master
