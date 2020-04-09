@@ -5,4 +5,4 @@ shellcheck:
   stage: test
   image: koalaman/shellcheck-alpine
   script: 
-    - shellcheck bin/*
+    - shellcheck -x bin/* *.sh

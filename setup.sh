@@ -1,6 +1,6 @@
 #!/bin/bash
 # Setup script for fresh OS install
-set -e
+set -euo pipefail
 
 if [[ "$EUID" -ne 0 ]]; then
     echo "Script must be run as root!"
@@ -25,13 +25,14 @@ sudo update-alternatives --set editor /usr/bin/vim.tiny
 
 echo ""
 echo "Setting up config files"
+cd config_files
 cp -f .gitconfig .vimrc ~/
 mkdir ~/tmp
 
 echo ""
 echo "Tilix config"
 sudo ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh
-echo "$(cat .bashrc)" >> ~/.bashrc
+cat .bashrc >> ~/.bashrc
 echo "You must import the Tilix config file manually"
 
 echo ""
