@@ -12,7 +12,7 @@ CUR_BRANCH=$(git symbolic-ref --short -q HEAD)
 
 echo "Current branch: $CUR_BRANCH"
 
-if [[ "${CUR_BRANCH}" == "master" ]]; then
+if [[ ${CUR_BRANCH} == "master" ]]; then
     echo "Already on master; cannot rebase"
     exit 1
 fi
