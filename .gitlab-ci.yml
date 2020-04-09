@@ -1,3 +1,8 @@
+stages:
+  - test
+
 shellcheck:
+  stage: test
   image: koalaman/shellcheck
-  script: shellcheck bin/*
+  script: 
+    - shellcheck bin/*
