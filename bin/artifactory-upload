@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Uploads a given package to Artifactory
-set -e
+set -euo pipefail
 
 ART_URL=http://artifactory.int.datarobot.com/artifactory/
 
@@ -31,21 +31,21 @@ if [[ "${ARTIFACTORY_API_KEY}" == "" ]]; then
 fi
 
 FILE=$1
-REPO_PATH=$2/$(basename $FILE)
+REPO_PATH=$2/$(basename "${FILE}")
 
 echo "Uploading ${FILE} to Artifactory remote path ${ART_URL}${REPO_PATH}"
 
 echo "Generating Checksums..."
 if [[ $(uname) == 'Darwin' ]]; then
-    MD5=$(md5 ${FILE} | awk '{print $4}')
-    SHA1=$(shasum ${FILE} | awk '{print $1}')
-    SHA256=$(shasum -a 256 ${FILE} | awk '{print $1}')
+    MD5=$(md5 "${FILE}" | awk '{print $4}')
+    SHA1=$(shasum "${FILE}" | awk '{print $1}')
+    SHA256=$(shasum -a 256 "${FILE}" | awk '{print $1}')
 elif [[ $(uname) == 'Linux' ]]; then
-    MD5=$(md5sum ${FILE} | awk '{print $1}')
-    SHA1=$(sha1sum ${FILE} | awk '{print $1}')
-    SHA256=$(sha256sum ${FILE} | awk '{print $1}')
+    MD5=$(md5sum "${FILE}" | awk '{print $1}')
+    SHA1=$(sha1sum "${FILE}" | awk '{print $1}')
+    SHA256=$(sha256sum "${FILE}" | awk '{print $1}')
 fi
 
 echo "Uploading file..."
-curl -X PUT -H "X-JFrog-Art-Api:${ARTIFACTORY_API_KEY}" -H "X-Checksum-Md5:${MD5}" -H "X-Checksum-Sha1:${SHA1}" -H "X-Checksum-Sha256:${SHA256}" "${ART_URL}${REPO_PATH}" -T ${FILE}
+curl -X PUT -H "X-JFrog-Art-Api:${ARTIFACTORY_API_KEY}" -H "X-Checksum-Md5:${MD5}" -H "X-Checksum-Sha1:${SHA1}" -H "X-Checksum-Sha256:${SHA256}" "${ART_URL}${REPO_PATH}" -T "${FILE}"
 

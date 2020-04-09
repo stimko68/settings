@@ -2,16 +2,11 @@
 # Updates all Git repositories in the given directory
 set -e
 
-TARGET_DIR=$1
-
-if [[ "${TARGET_DIR}" == "" ]]; then
-    TARGET_DIR="${PWD}"
-fi
+TARGET_DIR=${1:-$PWD}
 
 echo "Updating all Git repos in ${TARGET_DIR}"
 
-for d in $(find ${TARGET_DIR} -name ".git" -type d); do 
+find "${TARGET_DIR}" -name ".git" -type d -exec sh -c '
     GIT_DIR="$(basename $d)"
     echo "${GIT_DIR}"
-    git -C "${GIT_DIR}" up
-done
+    git -C "${GIT_DIR}" up ' sh {} \;

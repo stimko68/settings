@@ -14,4 +14,4 @@ if [[ "${HOSTNAME}" == "" ]]; then
     exit 1
 fi
 
-ssh -i ~/.ssh/id_rsa_jenkins-slave -o "StrictHostKeyChecking no" "jenkins-slave@${HOSTNAME}"
+ssh -i ~/.ssh/id_rsa_jenkins-slave -o "StrictHostKeyChecking no" "jenkins-slave@\${HOSTNAME}"

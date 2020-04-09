@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+set -euo pipefail
+
+BIN_DIR="${HOME}/bin"
+# shellcheck source=bin/_common.sh
+source "${BIN_DIR}/_common.sh"
+
+_git_repo_check
+
 # Cleanup local branches that don't exist in the remote
 git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D
-

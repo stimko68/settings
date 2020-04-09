@@ -1,6 +1,12 @@
 #!/bin/bash
 # Rebase the current branch with master
-set -e
+set -euo pipefail
+
+BIN_DIR="${HOME}/bin"
+# shellcheck source=bin/_common.sh
+source "${BIN_DIR}/_common.sh"
+
+_git_repo_check
 
 CUR_BRANCH=$(git symbolic-ref --short -q HEAD)
 
