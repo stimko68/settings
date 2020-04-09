@@ -15,10 +15,15 @@ Before running the setup script this repository must be cloned, so follow these 
 
 3. Clone this repository
     ```
-    git clone git@github.com:stimko68/settings.git
+    git clone git@gitlab.com:simko33f/settings.git 
     ```
 
 4. Run the setup script
     ```
     sudo ./setup.sh
     ```
+
+# Testing
+Use the following command to run tests locally. It requires Docker and make:
+
+    make test
