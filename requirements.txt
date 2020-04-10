@@ -1,0 +1,10 @@
+black==19.10b0
+cx_Oracle==7.3.0
+docker==4.2.0
+GitPython==3.1.0
+kubernetes==11.0.0
+openshift==0.11.0
+pylint==2.4.4
+requests~=2.23.0
+sqlparse==0.3.1
+urllib3~=1.25.8

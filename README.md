@@ -20,6 +20,11 @@ Before running the setup script this repository must be cloned, so follow these 
     git clone git@gitlab.com:simko33f/settings.git 
     ```
 
+4. Setup a virtualenv
+    ```
+    mkvirtualenv --python=3 settings
+    ```
+    
 4. Run the setup script
     ```
     sudo ./setup.sh
