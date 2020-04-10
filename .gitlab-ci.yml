@@ -1,6 +1,5 @@
-default:
-  variables:
-    USE_DOCKER: false
+variables:
+  USE_DOCKER: "false"
 
 stages:
   - test
