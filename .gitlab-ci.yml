@@ -13,6 +13,6 @@ shellcheck:
 
 pylint:
   stage: test
-  image: python:3.8-alpine
+  image: python:3.8
   script:
     - ./run_tests.sh --pylint
