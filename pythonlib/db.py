@@ -12,10 +12,11 @@ from .custom_exception import CommonException
 
 
 class DatabaseConnectionFailed(CommonException):
-    pass
+    """Custom exception for DB connection failures"""
 
 
-class OracleDatabase(object):
+class OracleDatabase:
+    """Primary object for interacting with Oracle DBs"""
 
     def __init__(self, db_hostname='db', db_user='SYS', db_passwd='Welcome1!', service_name='MYPDB', db_user_role='SYSDBA', log_domain=''):
         self.db_hostname = db_hostname
@@ -63,7 +64,7 @@ class OracleDatabase(object):
             sql_query = sql_query.replace(';', '')
 
             self.cursor.execute(sql_query)
-        except cx_Oracle.DatabaseError as dbe:
+        except cx_Oracle.DatabaseError as dbe:  # pylint: disable=c-extension-no-member
             self.log.exception(dbe)
 
     def close(self):
@@ -92,7 +93,7 @@ class OracleDatabase(object):
         :return:                True if connection is successful
         :rtype:                 bool
         """
-        n = 0
+        count = 0
 
         connection_params = {
             'user': self.db_user,
@@ -106,22 +107,22 @@ class OracleDatabase(object):
         self.log.info(f'Using connection parameters: {connection_params}')
         self.log.info('Attempting database connection...')
 
-        while n < max_attempts:
-            n += 1
+        while count < max_attempts:
+            count += 1
 
-            self.log.info(f'Connection attempt {n}/{max_attempts}')
+            self.log.info(f'Connection attempt {count}/{max_attempts}')
 
             try:
-                self.connection_object = cx_Oracle.connect(**connection_params)
+                self.connection_object = cx_Oracle.connect(**connection_params)  # pylint: disable=c-extension-no-member
                 self.log.info('Successfully connected to the database!')
 
                 if not self.cursor:
                     self.cursor = self.connection_object.cursor()
 
                 return True
-            except cx_Oracle.DatabaseError as dbe:
+            except cx_Oracle.DatabaseError as dbe:  # pylint: disable=c-extension-no-member
                 self.log.warning(f'Connection attempt failed; error: {dbe}')
-                if n < max_attempts:
+                if count < max_attempts:
                     self.log.info(f'Database not ready; sleeping for {sleep_time} seconds...')
                     time.sleep(sleep_time)
                 else:

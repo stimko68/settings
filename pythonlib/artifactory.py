@@ -18,10 +18,11 @@ DEFAULT_ARTIFACTORY_URL = ''
 
 
 class ArtifactoryRequestException(Exception):
-    pass
+    """Custom exception for Artifactory errors"""
 
 
-class Artifactory(object):
+class Artifactory:
+    """Abstracts interactions with Artifactory"""
     storage_api = '/api/storage'
     aql_api = '/api/search/aql'
 
@@ -94,7 +95,7 @@ class Artifactory(object):
 
         # Check for any non-string values in the headers dict
         for key, value in headers.items():
-            if type(value) in (bool, int, float):
+            if isinstance(value, (bool, int, float)):
                 headers[key] = str(value)
 
         url = self._cleanup_url(uri)
@@ -216,8 +217,8 @@ class Artifactory(object):
 
         if return_extra_data:
             return json.loads(response.text)
-        else:
-            return response.status_code == 200
+
+        return response.status_code == 200
 
     def retrieve_file(self, repository_name, file_name, local_file=None, return_extra_data=False):
         """Download a file from Artifactory.
@@ -256,10 +257,10 @@ class Artifactory(object):
         try:
             provided_md5 = response.headers['X-Checksum-Md5']
 
-            with open(local_file, 'wb') as f:
+            with open(local_file, 'wb') as handle:
                 for chunk in response.iter_content(chunk_size=1024):
                     if chunk:
-                        f.write(chunk)
+                        handle.write(chunk)
 
             logging.info('Validating downloaded file...')
 
@@ -277,8 +278,8 @@ class Artifactory(object):
 
         if return_extra_data:
             return local_file, response.headers
-        else:
-            return local_file
+
+        return local_file
 
     def upload_file(self, repository_name, file_name, local_file):
         """Upload a local file to Artifactory.
@@ -314,8 +315,8 @@ class Artifactory(object):
 
         url_path = os.path.join(repository_name, file_name)
 
-        with open(local_file, 'rb') as f:
-            upload_headers['data'] = f
+        with open(local_file, 'rb') as handle:
+            upload_headers['data'] = handle
             response = self.put(url_path, **upload_headers)
 
         upload_location = response.headers['Location']
@@ -339,5 +340,5 @@ class Artifactory(object):
             response = self.post(self.aql_api, data=aql)
             result = json.loads(response.content.decode(encoding))
             return result
-        except Exception as e:
-            logging.exception(e)
+        except Exception as err:  # pylint: disable=broad-except
+            logging.exception(err)

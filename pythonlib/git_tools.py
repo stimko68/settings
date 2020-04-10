@@ -25,11 +25,12 @@ FETCH_CODES = {
 
 
 class GitException(CommonException):
-    pass
+    """Generic Git exception class"""
 
 
 # Decorator for checking that the local repo exists
 def check_local_repository_exists(method):
+    """Decorator for checking that the target repo exists and is accessible"""
     @functools.wraps(method)
     def _check_local_repository_exists_wrapper(self, *args, **kwargs):
         if not os.path.exists(self.repo_dir):
@@ -38,7 +39,8 @@ def check_local_repository_exists(method):
     return _check_local_repository_exists_wrapper
 
 
-class GitTools(object):
+class GitTools:
+    """Primary object for abstracting Git interactions"""
 
     def __init__(self, repo_dir, remote_name='origin'):
         self.repo_dir = os.path.relpath(repo_dir)
@@ -248,20 +250,21 @@ class GitTools(object):
 
         fetch_data = self.remote.pull()
 
-        for fd in fetch_data:
-            if str(fd.ref).endswith(branch):
-                pull_data = fd
+        for data in fetch_data:
+            if str(data.ref).endswith(branch):
+                pull_data = data
                 break
 
         if pull_data.flags == 128:
             raise GitException(f'Error pulling updates from the remote! Info from git: {pull_data.note}')
-        else:
-            logging.info(f'Result of pull operation: {FETCH_CODES[pull_data.flags]}')
+
+        logging.info(f'Result of pull operation: {FETCH_CODES[pull_data.flags]}')
 
         return True
 
     @check_local_repository_exists
     def commit_to_branch(self, file_list, message, branch_name=None):
+        """Commit the given files to the Git repo."""
         if branch_name:
             self.checkout_branch(branch_name)
         else:
@@ -269,5 +272,6 @@ class GitTools(object):
 
         logging.info(f'Committing to {branch_name}: {message}')
         logging.debug(f'List of files to commit: {file_list}')
-        self.git.add(file_list)
-        self.git.commit(message)
+        # TODO: Implement the add and commit methods
+        # self.git.add(file_list)
+        # self.git.commit(message)

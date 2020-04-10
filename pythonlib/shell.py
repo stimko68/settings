@@ -55,7 +55,7 @@ def run_shell_command(cmd, full_output=False, command_directory=os.getcwd(), log
         except AttributeError:
             pass
 
-    if type(cmd) == str:
+    if isinstance(cmd, str):
         cmd = shlex.split(cmd)
 
     process = subprocess.Popen(cmd, **subprocess_flags)
@@ -70,5 +70,5 @@ def run_shell_command(cmd, full_output=False, command_directory=os.getcwd(), log
 
     if full_output:
         return return_code, output
-    else:
-        return return_code
+
+    return return_code
