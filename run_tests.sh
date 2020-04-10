@@ -9,18 +9,22 @@ USE_DOCKER="${USE_DOCKER:-true}"
 function run_wrapper() {
     local run_cmd="${1}"
     local docker_image="${2:-}"
+    local extra_cmds="${3:-}"
 
     if [[ "${USE_DOCKER}" == "true" ]]; then
         run_cmd="cd /data && ${run_cmd}"
         docker run -i --rm -v "${BASE_DIR}":/data "${docker_image}" sh -c "${run_cmd}"
     else
+        echo "Executing ${extra_cmds}"
+        eval "${extra_cmds}"
+        echo "Executing ${run_cmd}"
         eval "${run_cmd}"
     fi
 }
 
 function run_shellcheck() {
     echo "Running shellcheck"
-    run_wrapper "shellcheck -x bin/* *.sh" koalaman/shellcheck-alpine
+    run_wrapper "shellcheck -x bin/* *.sh" koalaman/shellcheck-alpine "apt update && apt install -y shellcheck"
 }
 
 function run_pylint() {
