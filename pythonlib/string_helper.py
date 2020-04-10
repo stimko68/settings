@@ -1,7 +1,9 @@
 """
 Functions to help interact with strings.
 """
-from .__init__ import *
+import logging
+import re
+from pathlib import Path
 
 
 def remove_from_start_if_present(target, start):
@@ -53,7 +55,7 @@ def sed(file_path, search_pattern, replace_string):
     :type replace_string:   str
     :return:                0 for success, 1 for failure
     """
-    if type(file_path) == str:
+    if isinstance(file_path, str):
         edit_file = Path(file_path)
     else:
         edit_file = file_path
@@ -64,11 +66,11 @@ def sed(file_path, search_pattern, replace_string):
         logging.error(f'Given file path {file_path} does not exist')
         return 1
 
-    with open(edit_file, 'r') as rf:
-        file_contents = rf.readlines()
+    with open(edit_file, 'r') as read_file:
+        file_contents = read_file.readlines()
 
-    with open(edit_file, 'w') as wf:
+    with open(edit_file, 'w') as write_file:
         for line in file_contents:
-            wf.write(re.sub(search_pattern, replace_string, line))
+            write_file.write(re.sub(search_pattern, replace_string, line))
 
     return 0

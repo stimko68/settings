@@ -2,7 +2,7 @@
 """
 Wrapper around calling oc commands
 """
-from .__init__ import *
+import urllib3
 
 from kubernetes import client
 from kubernetes.stream import stream
@@ -17,10 +17,11 @@ urllib3.disable_warnings()
 
 
 class OpenShiftException(CommonException):
-    pass
+    """Custom exception class for this module"""
 
 
-class OC(object):
+class OC:
+    """Python representation of the oc commandline tool."""
 
     def __init__(self, log_domain='', namespace='default', cluster='dev'):
         self.log_domain = log_domain
@@ -79,9 +80,9 @@ class OC(object):
             if name_filter_string:
                 new_return_data = list()
 
-                for d in return_data['items']:
-                    if name_filter_string in d['metadata']['name']:
-                        new_return_data.append(d)
+                for datum in return_data['items']:
+                    if name_filter_string in datum['metadata']['name']:
+                        new_return_data.append(datum)
 
                 return_data['items'] = new_return_data
 
@@ -131,7 +132,7 @@ class OC(object):
         if not namespace:
             namespace = self.namespace
 
-        if type(command) == str:
+        if isinstance(command, str):
             command = command.split(' ')
 
         exec_options = {
@@ -291,8 +292,8 @@ class OC(object):
         try:
             obj.patch(patch_body, namespace=namespace)
             return 0
-        except exceptions.NotFoundError as e:
-            self.log.exception(e)
+        except exceptions.NotFoundError as err:
+            self.log.exception(err)
             return 1
 
     def switch_namespace(self, namespace):

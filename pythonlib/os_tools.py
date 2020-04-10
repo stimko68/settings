@@ -1,7 +1,9 @@
 """
 Common module used for OS level helper functions
 """
-from .__init__ import *
+import logging
+import shutil
+from pathlib import Path
 
 
 def create_parent_dirs(file_path):
@@ -34,9 +36,9 @@ def make_symlink(from_path, to_path, log_domain=''):
     log = logging.getLogger(log_domain)
     if from_path.exists():
         log.debug(f'Destination file exists; removing {from_path}')
-        log.debug('Removing directory') if Path(from_path).is_dir() else log.info('Removing file or symlink')
+        log.debug('Removing directory') if Path(from_path).is_dir() else log.info('Removing file or symlink')  # pylint: disable=expression-not-assigned
         is_file_or_link = Path(from_path).is_file() or Path(from_path).is_symlink()
-        from_path.unlink() if is_file_or_link else shutil.rmtree(from_path)
+        from_path.unlink() if is_file_or_link else shutil.rmtree(from_path)  # pylint: disable=expression-not-assigned
 
     create_parent_dirs(from_path)
     from_path.symlink_to(to_path)

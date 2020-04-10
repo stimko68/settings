@@ -1,7 +1,8 @@
 """
 Common logging functions used across all modules.
 """
-from .__init__ import *
+import logging
+import os
 
 
 def setup_logging(log_domain, stream=True, logfile=None, log_level='info'):
@@ -41,14 +42,14 @@ def setup_logging(log_domain, stream=True, logfile=None, log_level='info'):
         log_format = logging.Formatter('%(asctime)s [%(module)s] [%(levelname)s]: %(message)s')
 
         if stream:
-            sh = logging.StreamHandler()
-            sh.setFormatter(log_format)
-            logger.addHandler(sh)
+            stream_handler = logging.StreamHandler()
+            stream_handler.setFormatter(log_format)
+            logger.addHandler(stream_handler)
 
         if logfile:
             logfile = os.path.abspath(logfile)
-            fh = logging.FileHandler(logfile)
-            fh.setFormatter(log_format)
-            logger.addHandler(fh)
+            file_handler = logging.FileHandler(logfile)
+            file_handler.setFormatter(log_format)
+            logger.addHandler(file_handler)
 
     return logger

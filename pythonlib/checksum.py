@@ -1,10 +1,12 @@
 """
 Common module for functions that deal with checksums
 """
-from .__init__ import *
+import hashlib
+import logging
+import os
 
 
-def generate_checksum(file_path, checksum_type, output_filename=None, skip_files=None):
+def generate_checksum(file_path, checksum_type, output_filename=None, skip_files=None):  # pylint: disable=too-many-locals,too-many-branches
     """Generate a checksum for a given file or directory.
 
     Given a file path (it can be relative) and a checksum type, generate
@@ -34,8 +36,8 @@ def generate_checksum(file_path, checksum_type, output_filename=None, skip_files
     if skip_files is None:
         skip_files = list()
 
-    if type(skip_files) != list:
-        error = f'`skip_files` must be a list'
+    if not isinstance(skip_files, list):
+        error = f'`skip_files` must be a list, instead it is {type(skip_files)}'
         logging.error(error)
         raise TypeError(error)
 
@@ -53,10 +55,10 @@ def generate_checksum(file_path, checksum_type, output_filename=None, skip_files
         raise AttributeError(error)
 
     if os.path.isdir(file_path):
-        for root, dirs, files in os.walk(file_path):
-            for f in files:
-                if not os.path.isdir(f) and f not in skip_files:
-                    check_file = os.path.join(root, f)
+        for root, dirs, files in os.walk(file_path):  # pylint: disable=unused-variable
+            for fle in files:
+                if not os.path.isdir(fle) and fle not in skip_files:
+                    check_file = os.path.join(root, fle)
                     file_size = os.path.getsize(check_file)
 
                     if file_size < 1024:

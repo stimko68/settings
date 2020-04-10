@@ -6,6 +6,14 @@ clean:
 	find . -name "*.pyc" -type f -delete
 .PHONY: clean
 
+pylint:
+	./run_tests.sh --pylint
+.PHONY: pylint
+
+shellcheck:
+	./run_tests.sh --shellcheck
+.PHONY: shellcheck
+
 test:
-	docker run -i -v ${PWD}:/data koalaman/shellcheck-alpine sh -c 'cd /data && shellcheck -x bin/* *.sh'
+	./run_tests.sh
 .PHONY: test

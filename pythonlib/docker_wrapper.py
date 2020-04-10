@@ -1,4 +1,11 @@
-from .__init__ import *
+"""
+Abstract interacting with Docker
+"""
+import os
+import socket
+
+import docker
+
 
 client = docker.APIClient(base_url='unix://var/run/docker.sock')
 

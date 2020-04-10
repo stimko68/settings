@@ -1,7 +1,10 @@
 """
 Common module used for shell functions
 """
-from .__init__ import *
+import logging
+import os
+import shlex
+import subprocess
 
 
 def run_shell_command(cmd, full_output=False, command_directory=os.getcwd(), log_domain='', realtime_output=True,

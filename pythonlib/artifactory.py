@@ -1,7 +1,12 @@
 """
 Module for abstracting interactions with Artifactory
 """
-from .__init__ import *
+import json
+import logging
+import os
+import urllib3
+
+import requests
 
 from .checksum import generate_checksum
 from .string_helper import remove_from_start_if_present

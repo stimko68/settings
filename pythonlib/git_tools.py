@@ -1,4 +1,9 @@
-from .__init__ import *
+"""
+Wrapper for interacting with Git
+"""
+import functools
+import logging
+import os
 
 from git import GitCommandError
 from git import NoSuchPathError
